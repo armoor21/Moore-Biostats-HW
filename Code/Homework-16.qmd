@@ -1,0 +1,48 @@
+---
+title: "Homework-16.qmd"
+format: html
+editor: visual
+---
+Clearing R's environment and turning on tidyverse and here packages.
+```{r}
+rm (list = ls())
+library(tidyverse)
+library(here)
+```
+Creating the new data frame "cover" with the donnerville_percent_cover.csv data. Although I understand it would have been ideal for R to read from the data folder in here, /Users/AddieMoore/Library/CloudStorage/OneDrive-St.LawrenceUniversity/Biostats/Moore-Biostats-HW, the file did not appear in Rstudio because OneDrive is still unsyncing every time so I imported it a different way. 
+```{r}
+library(readr)
+cover <- read_csv("~/Desktop/donnerville_percent_cover.csv")
+```
+Examining the data using view to view the data set in a new tab and str to look at the structure of the data.
+```{r}
+view(cover)
+str(cover)
+```
+Changing column names
+```{r}
+colnames(cover) <- c("site", "date", "plot_type", "plot_dim", "slope", "aspect", "plot", "cover_type", "percent")
+```
+Changing site, plot_type, and cover_type column variables from character data to factor data.
+```{r}
+cover$site <- as.factor(cover$site)
+cover$plot_type <- as.factor(cover$plot_type)
+cover$cover_type <- as.factor(cover$cover_type)
+```
+Changing date column variables from character data to date data. 
+```{r}
+cover$date <- dmy(cover$date)
+```
+Finding average percent cover for bare, bryophytes, and vascular plants in Donnerville 1.
+```{r}
+bare <- data.frame(n = c(95.0, 95.0, 70.0, 50.0))
+mean (bare$n)
+bryophytes <- data.frame(n= c(0, 0, 10))
+mean (bryophytes$n)
+vascular <- data.frame(n = c(5.0, 30.0, 40.0))
+mean(vascular$n)
+```
+
+```{r}
+mean(cover$percent[cover$cover_type == "Vascular"])
+```
