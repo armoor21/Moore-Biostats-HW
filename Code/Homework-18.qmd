@@ -1,0 +1,60 @@
+---
+title: "Homework-18.qmd"
+format: html
+editor: visual
+---
+
+Setting up.
+```{r}
+rm (list = ls())
+library(tidyverse)
+library(here)
+```
+Reading in dataset from desktop since OneDrive is disconnected. There is a copy of the csv in the Data folder but it is greyed out. 
+```{r}
+library(readr)
+compensation <- read_csv("~/Desktop/compensation.csv")
+View(compensation)
+```
+Making a scatterplot.
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) + geom_point()
+```
+Getting rid of grey background in scatterplot.
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) + geom_point() + theme_bw()
+```
+Changing point size.
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) + theme_bw() + geom_point(size = 5)
+```
+Changing axis labels.
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) + theme_bw() + geom_point(size = 5) + xlab("Root Biomass") + ylab("Fruit Production")
+```
+
+Changing colors to show specific groups. 
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit, color = Grazing)) + theme_bw() + geom_point(size = 5) + xlab("Root Biomass") + ylab("Fruit Production")
+```
+Making a box and whisker plot. 
+```{r}
+ggplot(compensation, aes(x = Grazing, y = Fruit)) + geom_boxplot() + geom_point(size = 4, color = 'lightgrey', alpha = 0.5) + xlab("Grazing treatment") + ylab("Fruit Production") + theme_bw()
+```
+Making a histogram that shows fruit production. 
+```{r}
+ggplot(compensation, aes(x = Fruit)) + geom_histogram()
+```
+Defining bin number.
+```{r}
+ggplot(compensation, aes(x = Fruit)) + geom_histogram(bins = 15)
+```
+Produce graph matrix that is organized by data type (factor, categorical)
+```{r}
+ggplot(compensation, aes(x = Fruit)) + geom_histogram(bins = 15) + facet_wrap(~Grazing)
+```
+Saving graphs as a .png.
+```{r}
+ggsave("ThatCoolHistorgamofFruit.png")
+```
+
