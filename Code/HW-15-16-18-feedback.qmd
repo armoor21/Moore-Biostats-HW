@@ -1,0 +1,27 @@
+---
+title: "Homework feedback"
+format: html
+editor: visual
+---
+
+## Homework feedback
+
+### Homework 15
+
+I don't see a homework-15.qmd file anywhere in your repository so I can't give you credit. However, this is a critical homework, so you should make sure you can do everything in GSWR chapter 3.
+
+### Homework 16
+
+You need to let me know (and go to IT to get one drive sync issues to work). Your method for pulling in the data, not having them in your Data folder, makes it impossible for me to run your code and see if it works. For that reason, I can only give you 1 point for this homework. Make sure to get these tech issues fixed quickly.
+
+I don't see any of the code that deals with fixing mistakes in the different variables.
+
+Also, your work to e.g. find the average percent cover does not involve the code you are learning in GSWR Chapter 3 (Homework 15). You really need to master that. The solution you came up with would not be successful if the dataset had e.g. 15,000 rows - you simply couldn't go through the dataset as you did in line 52. Also, these code methods are unacceptable.
+
+If you need help with something, you need to let me know. I would be more than happy to sit with you and go over things between classes to make sure you understand, but I can't do that if you don't let me know you need help.
+
+Score = 0.5
+
+### Homework 18
+
+Ok, so now it is many days later and you still haven't gone to IT to get the one drive issue fixed. You need to do that ASAP. It simply will not work if you don't have the data inside of a data folder inside of your project. Although your code seems to run (I think, I don't have the data there), I'm only giving you 1 of 2 points for this assignment.
