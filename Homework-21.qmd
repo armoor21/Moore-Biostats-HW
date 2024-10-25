@@ -1,0 +1,92 @@
+---
+title: "Homework-21.qmd"
+format: html
+editor: visual
+---
+Clear the decks
+```{r}
+rm(list = ls())
+```
+Libraries I always use
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+Import the data
+```{r}
+library(here)
+lady <- read.csv(here("Data","ladybirds.csv"))
+```
+Check it out
+```{r}
+glimpse(lady)
+```
+Convert variables to factor
+```{r}
+lady <- lady %>% mutate(Habitat = as.factor(Habitat))
+lady <- lady %>% mutate(Site = as.factor(Site))
+lady <- lady %>% mutate(colour = as.factor(colour))
+```
+Summarize data
+```{r}
+totals <- lady %>%
+  group_by(Habitat, colour) %>%
+  summarise(total.number = sum(number))
+```
+Summarize raw data
+```{r}
+ggplot(totals, aes(x = Habitat, y = total.number, fill = colour)) + geom_bar(stat = 'identity', position = 'dodge')
+```
+Customize colors used to represent groups of data
+```{r}
+ggplot(totals, aes(x = Habitat, y = total.number, fill = colour)) + geom_bar(stat = 'identity', position = 'dodge') + scale_fill_manual(values = c(black = "black", red = "red"))
+```
+Give function a matrix of total counts
+```{r}
+totals
+```
+Cross(x)-tabulation
+```{r}
+lady.mat <- xtabs(number ~ Habitat + colour, data = lady)
+lady.mat
+```
+Chi-squared test
+```{r}
+chisq.test(lady.mat)
+```
+Assign chi squared values to a name and look at mechanics of test
+```{r}
+lady.chi <- chisq.test(lady.mat)
+names(lady.chi)
+lady.chi$expected
+```
+Read in ozone data
+```{r}
+rm(list = ls())
+library(dplyr)
+library(ggplot2)
+library(here)
+ozone <- read.csv(here("Data","ozone.csv"))
+```
+Examine ozone data
+```{r}
+glimpse(ozone)
+```
+Convert variables to factor
+```{r}
+ozone <- ozone %>% mutate(Garden.location = as.factor(Garden.location))
+ozone <- ozone %>% mutate(Garden.ID = as.factor(Garden.ID))
+```
+Stack histograms on top of each other
+```{r}
+ggplot(ozone, aes(x = Ozone)) + geom_histogram(binwidth = 10) + facet_wrap(~ Garden.location, ncol = 1) + theme_bw()
+```
+Do a t-test
+```{r}
+t.test(Ozone ~ Garden.location, data = ozone)
+```
+Test for equality of variance in two-sample t-test
+```{r}
+var.test(Ozone ~ Garden.location, data = ozone)
+```
+
