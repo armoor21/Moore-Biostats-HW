@@ -1,0 +1,39 @@
+---
+title: "Homework-23.qmd"
+format: html
+editor: visual
+---
+Setting up workspace
+```{r}
+rm (list = ls())
+library(tidyverse)
+library(here)
+plant_gr <- read.csv(here("Data", "plant.growth.rate.csv"))
+```
+Visualizing data on a scatterplot with units
+```{r}
+glimpse(plant_gr)
+ggplot(plant_gr, aes(x = soil.moisture.content, y = plant.growth.rate)) + geom_point() + ylab("Plant Growth Rate (mm/week)") + theme_bw()
+```
+Fitting a linear model
+```{r}
+model_pgr <- lm(plant.growth.rate ~ soil.moisture.content, data = plant_gr)
+```
+Installing ggfortify to produce figures
+```{r}
+library(ggfortify)
+autoplot(model_pgr, smooth.colour = NA)
+```
+Producing an anova
+```{r}
+anova(model_pgr)
+```
+Producing a summary table
+```{r}
+summary(model_pgr)
+```
+Adding regression lines
+```{r}
+ggplot(plant_gr, aes(x = soil.moisture.content, y = plant.growth.rate)) + geom_point() + geom_smooth(method = 'lm') + ylab("Plant Growth Rate (mm/week)") + theme_bw()
+```
+
