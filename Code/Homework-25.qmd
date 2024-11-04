@@ -44,4 +44,10 @@ Get mean growth rates
 ```{r}
 sumDat <- daphnia %>% group_by(parasite) %>% summarise(meanGR = mean(growth.rate))
 ```
+Installing packages not on CRAN
+```{r}
+install.packages("devtools")
+library(devtools)
+install_github("sinhrks/ggfortify")
+```
 
