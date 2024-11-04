@@ -1,0 +1,47 @@
+---
+title: "Homework-25.qmd"
+format: html
+editor: visual
+---
+Getting and plotting the data
+```{r}
+rm (list = ls())
+library(tidyverse)
+library(ggfortify)
+library(here)
+daphnia <- read.csv(here("Data", "Daphniagrowth.csv"))
+glimpse(daphnia)
+```
+Changing character data to factor data
+```{r}
+daphnia$parasite = as.factor(daphnia$parasite)
+```
+Viewing data as box-and-whisker plots
+```{r}
+ggplot(daphnia, aes(x=parasite, y=growth.rate)) + geom_boxplot() + theme_bw()
+```
+Switch x- and y-axis
+```{r}
+ggplot(daphnia, aes(x=parasite, y=growth.rate)) + geom_boxplot() + theme_bw() + coord_flip()
+```
+Contructing ANOVA
+```{r}
+model_grow <- lm(growth.rate ~ parasite, data = daphnia)
+```
+Checking ANOVA
+```{r}
+autoplot(model_grow, smooth.colour = NA)
+```
+Making an inference from a one-way ANOVA
+```{r}
+anova(model_grow)
+```
+Summary table
+```{r}
+summary(model_grow)
+```
+Get mean growth rates
+```{r}
+sumDat <- daphnia %>% group_by(parasite) %>% summarise(meanGR = mean(growth.rate))
+```
+
