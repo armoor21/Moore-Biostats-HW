@@ -1,0 +1,73 @@
+---
+title: "Homework-26.qmd"
+format: html
+editor: visual
+---
+Clear R's environment
+```{r}
+rm (list = ls())
+```
+
+Set up workspace
+```{r}
+library(tidyverse)
+library(ggfortify)
+library(multcomp)
+library(here)
+```
+
+Read in data set and view
+```{r}
+pea <- read.csv(here("Data", "s_r_pea_sections.csv"))
+glimpse(pea)
+```
+Turning Treatment to factor data
+```{r}
+pea$Treatment = as.factor(pea$Treatment)
+```
+
+Viewing data as a box-and-whisker plot
+```{r}
+ggplot(pea, aes(x=Treatment, y=pea_section_length_ou)) + geom_boxplot() + theme_bw()
+#Do not see any outliers that need to be removed
+```
+
+Flipping axes to read better
+```{r}
+ggplot(pea, aes(x=Treatment, y=pea_section_length_ou)) + geom_boxplot() + theme_bw() + coord_flip()
+#It appears that the experimental treatments are associated with significantly shorter pea lengths. 
+```
+
+Building model
+```{r}
+model_pea <- lm(pea_section_length_ou ~ Treatment, data = pea)
+```
+
+Checking assumptions
+```{r}
+autoplot(model_pea, smooth.colour = NA)
+```
+
+Conduct one-way ANOVA
+```{r}
+anova(model_pea)
+```
+
+View data in summary table
+```{r}
+summary(model_pea)
+#I am confused here because I don't understand how to make the control data be the treatment group that acts as the intercept that the other groups are compared to. I tried to change the name of the level to make it first in the alphabet but a different level was still selected as the intercept.
+```
+
+Summarize means
+```{r}
+sumDat <- pea %>% group_by(Treatment) %>% summarise(meanpea = mean(pea_section_length_ou))
+```
+
+Conducting Tukey HSD test
+```{r}
+phc1 <- glht(model_pea, linfct = mcp(Treatment = "Tukey"))
+summary(phc1)
+#There is a significant difference between: (percent sucrose VS 1 percent fructose 1 percent glucose), (Control VS 1 percent fructose 1 percent glucose), (2 percent sucrose VS 2 percent fructose), (Control VS percent fructose), (2 percent sucrose VS 2 percent glucose), (Control VS 2 percent glucose), (Control VS 2 percent sucrose)
+```
+
