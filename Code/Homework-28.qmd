@@ -1,0 +1,89 @@
+---
+title: "Homework-28"
+format: html
+editor: visual
+---
+
+Setting up workspace and reading in data file
+```{r}
+rm (list = ls())
+library(tidyverse)
+library(gridExtra)
+library(here)
+compensation <- read.csv(here("Data", "compensation.csv"))
+```
+
+Making base plots
+```{r}
+#BASE scatterplot
+eg_scatter <- ggplot(data = compensation, aes(x = Root, y = Fruit)) + geom_point()
+
+#BASE box-and-whisker plot
+eg_box <- ggplot(data = compensation, aes(x = Grazing, y = Fruit)) + geom_boxplot()
+
+#Adding to figure
+eg_scatter + theme_bw()
+
+#Putting multiple figures on the same page
+grid.arrange(eg_scatter, eg_box, nrow = 1)
+```
+
+Customizing axis labels and axis limits
+```{r}
+#X and Y axis labels
+eg_scatter + xlab("Root Biomass") + ylab("Fruit Production")
+
+#Title
+eg_scatter + ggtitle("My SUPERB title")
+
+#Combining labels
+eg_scatter + labs(title = "My useless title", x = "Root Biomass", y = "Fruit Production")
+
+#Changing the range of axes
+eg_scatter + xlim(0, 20) + ylim(0, 140)
+```
+
+Annotating
+```{r}
+#Putting custom text inside the figure
+eg_scatter + annotate("text", x = c(6,8), y = c(105, 25), label = c("Text up here...","...and text down here"))
+```
+
+Scales
+```{r}
+#Adjusting range of x-axis and frequency of tickmarks
+eg_scatter + scale_x_continuous(limits = c(4, 11), breaks = 4:11)
+
+#Customizing colors for grouping variable
+ggplot(data = compensation, aes(x = Root, y = Fruit, color = Grazing)) + geom_point() + scale_colour_manual(values = c(Grazed = "brown", Ungrazed = "green"))
+
+#Transform axis
+eg_box + scale_y_continuous(breaks = seq(from = 10, to = 150, by = 20, trans = "log10"))
+```
+
+Theme
+```{r}
+#Customizing panels and gridlines
+eg_scatter + theme(panel.background = element_rect(fill = NA, colour = "black"), panel.grid.minor = element_blank(), panel.grid.major = element_line(colour = "lightblue"))
+```
+
+Customizing theme of axis titles and tick marks
+```{r}
+eg_box + theme(axis.title.x = element_text(colour = "cornflowerblue", size = rel(2)), axis.text.x = element_text(angle = 45, size = 13, vjust = 0.5))
+```
+
+Customizing discrete-axis
+```{r}
+#Changing level names
+eg_box + scale_x_discrete(limits = c("Ungrazed", "Grazed"), labels = c("Control", "Grazed"))
+```
+
+Customizing legends/keys
+```{r}
+#Clean key
+ggplot(compensation, aes(x = Root, y = Fruit, color = Grazing)) + geom_point() + theme(legend.key = element_rect(fill = NA))
+
+#No key
+ggplot(compensation, aes(x = Root, y = Fruit, color = Grazing)) + geom_point() + theme(legend.position = "none")
+```
+
